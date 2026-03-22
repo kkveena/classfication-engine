@@ -1,0 +1,11 @@
+runtime:
+  model_dir: ./artifacts/distilbert/final_model
+  onnx_output_dir: ./artifacts/distilbert/final_model_onnx
+  max_length: 512
+  batch_size: 8
+  provider: CPUExecutionProvider
+  parity_atol: 1.0e-4
+  parity_rtol: 1.0e-4
+service:
+  host: 0.0.0.0
+  port: 8080

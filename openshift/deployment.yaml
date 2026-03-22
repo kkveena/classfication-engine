@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: distilbert-classifier
+  labels:
+    app: distilbert-classifier
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: distilbert-classifier
+  template:
+    metadata:
+      labels:
+        app: distilbert-classifier
+    spec:
+      containers:
+        - name: classifier
+          image: distilbert-classifier:latest
+          ports:
+            - containerPort: 8080
+          env:
+            - name: HF_HUB_OFFLINE
+              value: "1"
+            - name: TRANSFORMERS_OFFLINE
+              value: "1"
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            failureThreshold: 3
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 15
+            periodSeconds: 10
+          resources:
+            requests:
+              cpu: 500m
+              memory: 1Gi
+            limits:
+              cpu: 2000m
+              memory: 4Gi
+          volumeMounts:
+            - name: model-artifacts
+              mountPath: /app/artifacts/distilbert/final_model_onnx
+              readOnly: true
+            - name: config
+              mountPath: /app/config
+              readOnly: true
+      volumes:
+        - name: model-artifacts
+          persistentVolumeClaim:
+            claimName: distilbert-model-pvc
+        - name: config
+          configMap:
+            name: distilbert-config

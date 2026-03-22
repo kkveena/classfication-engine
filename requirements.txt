@@ -1,0 +1,14 @@
+transformers
+optimum[onnxruntime]
+onnx
+onnxruntime
+fastapi
+uvicorn
+pydantic
+numpy
+torch
+pyyaml
+scikit-learn
+tqdm
+pytest
+httpx
