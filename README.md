@@ -307,4 +307,3 @@ Recommended split:
 - ONNX Runtime wrapper for CPU inference
 - FastAPI service for deployment
 - config-driven layout with a top-level `config/`, a primary Python package, and a dedicated `tests/` folder
-# classfication-engine
